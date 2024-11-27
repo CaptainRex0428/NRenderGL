@@ -1,9 +1,9 @@
 include "Dependencies.lua"
 include "Directory.lua"
 
-workspace "ElementEngine"
+workspace "NRenderGL"
 	architecture "x64"
-	startproject "ElementEngine"
+	startproject "Render"
 	configurations{
 		"Debug",
 		"Release",
@@ -13,12 +13,8 @@ workspace "ElementEngine"
     filter "system:windows"
     buildoptions { "/EHsc", "/Zc:preprocessor", "/Zc:__cplusplus" }
 	
-group "Engine"
-	include "ElementEngine/ElementEngine.lua"
-group "Engine/Component"
-	include "ElementEditor/ElementEditor.lua"
-	include "ElementRuntime/ElementRuntime.lua"
-group "Engine/Extend"
+
+group "Extend"
 	include "Extend/ScrewExtend/ScrewExtend.lua"
 	
 group "Dependencies"
