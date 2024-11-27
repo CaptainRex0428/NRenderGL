@@ -16,16 +16,10 @@ project "Render"
 		"%{DepIncludeDir.libpng}",
         "%{DepIncludeDir.glad}",
         "%{DepIncludeDir.glfw}",
+        "%{DepIncludeDir.glew}",
         "%{DepIncludeDir.linmath}",
         "%{ProjIncludeDir.ScrewExtend}"
     }
-
-    includedirs
-	{
-		"SDL_image/include", 
-		"%{DepIncludeDir.SDL}",
-		"%{DepIncludeDir.libpng}"
-	}
 
 	links
 	{
@@ -34,6 +28,7 @@ project "Render"
 		"libpng",
         "glfw",
         "glad",
+        "glew",
         "ScrewExtend",
         "OpenGL32.lib",
         "User32.lib",
@@ -44,7 +39,8 @@ project "Render"
     libdirs
     {
         "%{LibDirectories.glfw}",
-        "%{LibDirectories.glad}"
+        "%{LibDirectories.glad}",
+        "%{LibDirectories.glew}"
     }
 
 	defines

@@ -4,6 +4,7 @@ DepIncludeDir["SDL_image"] = "%{wks.location}/Dependencies/SDL_image/include"
 
 DepIncludeDir["glad"] = "%{wks.location}/Dependencies/glad/include"
 DepIncludeDir["glfw"] = "%{wks.location}/Dependencies/glfw/include"
+DepIncludeDir["glew"] = "%{wks.location}/Dependencies/glew/include/GL"
 DepIncludeDir["imgui"] = "%{wks.location}/Dependencies/imgui"
 
 DepIncludeDir["zlib"] = "%{wks.location}/Dependencies/zlib"
@@ -26,5 +27,6 @@ LibDirectories = {}
 LibDirectories["SDL_ttf"] =  LibDir.."/SDL_ttf"
 LibDirectories["glfw"] =  LibDir.."/glfw"
 LibDirectories["glad"] =  LibDir.."/glad"
+LibDirectories["glew"] =  LibDir.."/glew"
 
 Library = {}
