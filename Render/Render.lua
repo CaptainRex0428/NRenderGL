@@ -12,9 +12,11 @@ project "Render"
     includedirs
     {
         "include",
-        "openGL32.lib",
 		"%{DepIncludeDir.SDL}",
 		"%{DepIncludeDir.libpng}",
+        "%{DepIncludeDir.glad}",
+        "%{DepIncludeDir.glfw}",
+        "%{DepIncludeDir.linmath}",
         "%{ProjIncludeDir.ScrewExtend}"
     }
 
@@ -30,9 +32,20 @@ project "Render"
 		"SDL",
 		"SDL_main",
 		"libpng",
+        "glfw",
+        "glad",
         "ScrewExtend",
-        "OpenGL32.lib"
+        "OpenGL32.lib",
+        "User32.lib",
+        "Gdi32.lib",
+        "Shell32.lib"
 	}
+
+    libdirs
+    {
+        "%{LibDirectories.glfw}",
+        "%{LibDirectories.glad}"
+    }
 
 	defines
 	{

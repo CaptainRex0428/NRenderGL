@@ -16,11 +16,15 @@ DepIncludeDir["SDL_ttf"] = "%{wks.location}/Dependencies/SDL_ttf"
 
 DepIncludeDir["spdlog"] = "%{wks.location}/Dependencies/spdlog/include"
 
+DepIncludeDir["linmath"] = "%{wks.location}/Dependencies/linmath"
+
 ProjIncludeDir={}
 
 ProjIncludeDir["ScrewExtend"] = "%{wks.location}/Extend/ScrewExtend/include"
 
 LibDirectories = {}
-LibDirectories["SDL_ttf"] =  LibDir.."/SDL_ttf_static"
+LibDirectories["SDL_ttf"] =  LibDir.."/SDL_ttf"
+LibDirectories["glfw"] =  LibDir.."/glfw"
+LibDirectories["glad"] =  LibDir.."/glad"
 
 Library = {}

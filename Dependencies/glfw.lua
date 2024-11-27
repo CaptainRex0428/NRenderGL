@@ -1,6 +1,7 @@
 project "glfw"
-	kind "SharedLib"
+	kind "StaticLib"
 	language "C"
+	targetname "glfw"
 
 	files
 	{
@@ -30,13 +31,6 @@ project "glfw"
 	location (LocationDir)
 	targetdir (TargetDir)
 	objdir (ObjectDir)
-
-    -- warnings "off"
-
-	postbuildcommands
-	{
-		("{COPY} %{cfg.buildtarget.relpath} "..DynamicDir)
-	}
 
 	filter "system:linux"
 		pic "On"
