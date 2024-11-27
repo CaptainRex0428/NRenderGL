@@ -20,6 +20,7 @@ ProjIncludeDir={}
 
 ProjIncludeDir["ScrewExtend"] = "%{wks.location}/Extend/ScrewExtend/include"
 
-LibraryDir = {}
+LibDirectories = {}
+LibDirectories["SDL_ttf"] =  LibDir.."/SDL_ttf_static"
 
 Library = {}

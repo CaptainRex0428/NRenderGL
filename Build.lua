@@ -1,5 +1,5 @@
-include "Dependencies.lua"
 include "Directory.lua"
+include "Dependencies.lua"
 
 workspace "NRenderGL"
 	architecture "x64"
@@ -13,6 +13,8 @@ workspace "NRenderGL"
     filter "system:windows"
     buildoptions { "/EHsc", "/Zc:preprocessor", "/Zc:__cplusplus" }
 	
+group "Render"
+	include "Render/Render.lua"
 
 group "Extend"
 	include "Extend/ScrewExtend/ScrewExtend.lua"

@@ -16,9 +16,17 @@ project "showfont"
 
     links
     {
+        "freetype",          -- 确保链接 FreeType 库
+        "harfbuzz", 
         "SDL",
 		"SDL_main",
-        "SDL_ttf"
+        "SDL_ttf",
+        "OpenGL32.lib"
+    }
+
+    libdirs
+    {
+        "%{LibDirectories.SDL_ttf}"
     }
 
     defines
@@ -85,10 +93,17 @@ project "glfont"
 
     links
     {
+        "freetype",          -- 确保链接 FreeType 库
+        "harfbuzz", 
         "SDL",
 		"SDL_main",
         "SDL_ttf",
         "OpenGL32.lib"
+    }
+
+    libdirs
+    {
+        "%{LibDirectories.SDL_ttf}"
     }
 
     defines
