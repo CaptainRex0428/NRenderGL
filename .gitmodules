@@ -41,3 +41,6 @@
 [submodule "Dependencies/linmath"]
 	path = Dependencies/linmath
 	url = https://github.com/datenwolf/linmath.h.git
+[submodule "Dependencies/glew"]
+	path = Dependencies/glew
+	url = https://github.com/nigels-com/glew.git
