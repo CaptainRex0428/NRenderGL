@@ -1,6 +1,7 @@
-# EngineTeamplate(使用Premake管理工程)
+# NRenderGL
 
-Language: PreMake
+Language: C++
+Manager: PreMake
 Status: Not started
 
 ![LOGO](img/Snipaste_2024-04-10_16-11-24.png)
