@@ -16,7 +16,7 @@ project "glew"
 
 	defines
 	{
-		"WIN32","_LIB","WIN32_LEAN_AND_MEAN","GLEW_STATIC"
+		"WIN32","_LIB","WIN32_LEAN_AND_MEAN","GLEW_STATIC" -- GLEW_BUILD for DLL
 	}
 
 	location (LocationDir)

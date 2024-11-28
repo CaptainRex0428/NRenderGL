@@ -46,7 +46,8 @@ project "Render"
 	defines
 	{
 		"LOAD_PNG",
-		"LOAD_TGA"
+		"LOAD_TGA",
+        "GLEW_STATIC"
 	}
 
     flags

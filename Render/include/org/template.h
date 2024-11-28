@@ -17,13 +17,6 @@ typedef struct Vertex
 	vec3 col;
 } Vertex;
 
-static const Vertex vertices[3] =
-{
-	{ { -0.6f, -0.4f }, { 1.f, 0.f, 0.f } },
-	{ {  0.6f, -0.4f }, { 0.f, 1.f, 0.f } },
-	{ {   0.f,  0.6f }, { 0.f, 0.f, 1.f } }
-};
-
 static const char* vertex_shader_text =
 "#version 330\n"
 "uniform mat4 MVP;\n"
@@ -58,6 +51,6 @@ namespace templateGL
 			glfwSetWindowShouldClose(window, GLFW_TRUE);
 	}
 
-	int draw();
+	int draw(const Vertex * vertices, int size);
 }
 

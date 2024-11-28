@@ -1,7 +1,10 @@
 #include "org/template.h"
 
-int templateGL::draw()
+#include <iostream>
+
+int templateGL::draw(const Vertex* vertices, int size)
 {
+
 	glfwSetErrorCallback(error_callback);
 
 	if (!glfwInit())
@@ -29,7 +32,7 @@ int templateGL::draw()
 	GLuint vertex_buffer;
 	glGenBuffers(1, &vertex_buffer);
 	glBindBuffer(GL_ARRAY_BUFFER, vertex_buffer);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, size, vertices, GL_STATIC_DRAW);
 
 	const GLuint vertex_shader = glCreateShader(GL_VERTEX_SHADER);
 	glShaderSource(vertex_shader, 1, &vertex_shader_text, NULL);
@@ -51,6 +54,7 @@ int templateGL::draw()
 	GLuint vertex_array;
 	glGenVertexArrays(1, &vertex_array);
 	glBindVertexArray(vertex_array);
+	
 	glEnableVertexAttribArray(vpos_location);
 	glVertexAttribPointer(vpos_location, 2, GL_FLOAT, GL_FALSE,
 		sizeof(Vertex), (void*)offsetof(Vertex, pos));
