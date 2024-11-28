@@ -38,3 +38,6 @@
 [submodule "Dependencies/linmath"]
 	path = Dependencies/linmath
 	url = https://github.com/datenwolf/linmath.h.git
+[submodule "Dependencies/spdlog"]
+	path = Dependencies/spdlog
+	url = https://github.com/gabime/spdlog.git
