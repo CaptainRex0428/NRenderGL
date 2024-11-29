@@ -31,7 +31,7 @@ project "EXE"
 
     -- warnings "off"
 
-    location (LocationDir)
+    location (EXELocationDir)
     targetdir (EXEDir)
     objdir (ObjectDir)
 

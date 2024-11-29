@@ -1,9 +1,59 @@
-#include "Render.h"
+ï»¿#include "Render.h"
 
 #include <iostream>
+#include <fstream>
+#include <string>
+#include <sstream>
+#include <filesystem>
 
 #include <glew.h>
 #include <GLFW/glfw3.h>
+
+struct ShaderSource
+{
+	std::string VertexSource;
+	std::string FragmentSource;
+};
+
+static std::string GetShaderPath(const std::string & shadername)
+{
+	std::filesystem::path workPath = std::filesystem::current_path();
+	std::filesystem::path filepath = workPath / "res" / "Shader" / shadername;
+	return filepath.string();
+};
+
+static ShaderSource ParseShader(const std::string & filepath)
+{
+	enum class ShaderType
+	{
+		NONE = -1,
+		VERTEX = 0,
+		FRAGMENT = 1
+	};
+
+	std::ifstream stream(filepath);
+
+	std::stringstream shaderStream[2];
+	ShaderType type = ShaderType::NONE;
+
+	std::string line;
+	while(getline(stream,line))
+	{
+		if(line.find("#shader") != std::string::npos)
+		{
+			if (line.find("vertex") != std::string::npos)
+				type = ShaderType::VERTEX;
+			else if (line.find("fragment") != std::string::npos)
+				type = ShaderType::FRAGMENT;
+		}
+		else
+		{
+			shaderStream[(int)type] << line << std::endl;
+		}
+	}
+
+	return {shaderStream[(int)ShaderType::VERTEX].str(), shaderStream[(int)ShaderType::FRAGMENT].str()};
+}
 
 static unsigned int CompileShader(unsigned int type,const std::string & source)
 {
@@ -85,36 +135,14 @@ int render::Render(const Vertex* vertices, unsigned int size)
 	glBindBuffer(GL_ARRAY_BUFFER,buffer);
 	glBufferData(GL_ARRAY_BUFFER, size, vertices,GL_STATIC_DRAW);// specify the data and specify how to call draw
 
-	std::string vertexShader = 
-		"#version 330 core\n"
-		"\n"
-		"uniform mat4 MVP;\n"
-		"in vec4 vCol;\n"
-		"in vec4 vPos;\n"
-		"out vec4 color;\n"
-		"void main()\n"
-		"{\n"
-		"    gl_Position = MVP * vPos;\n"
-		"    color = vCol;"
-		"}\n";
+	ShaderSource shaderSource = ParseShader(GetShaderPath("Basic.shader"));
+	unsigned int shader = CreateShader(shaderSource.VertexSource, shaderSource.FragmentSource);
 
-	std::string fragmentShader =
-		"#version 330 core\n"
-		"\n"
-		"in vec4 color;\n"
-		"out vec4 fragment;\n"
-		"\n"
-		"void main()\n"
-		"{\n"
-		"    fragment = color;\n"
-		"}\n";
-
-	unsigned int shader = CreateShader(vertexShader, fragmentShader);
 	glUseProgram(shader);
 
 	// tell the layout of attributes
-	// µÚÒ»¸ö²ÎÊý£¨index£©Ö¸¶¨ÁËÄãÔÚ×ÅÉ«Æ÷ÖÐÎª¶¥µãÊôÐÔËùÉèÖÃµÄÎ»ÖÃË÷Òý¡£
-	// ËüÓÃÓÚ½« OpenGL °ó¶¨µÄ¶¥µãÊôÐÔÊý¾ÝÓë¶¥µã×ÅÉ«Æ÷ÖÐµÄÏàÓ¦ÊäÈë±äÁ¿ÏàÆ¥Åä¡£
+	// ç¬¬ä¸€ä¸ªå‚æ•°ï¼ˆindexï¼‰æŒ‡å®šäº†ä½ åœ¨ç€è‰²å™¨ä¸­ä¸ºé¡¶ç‚¹å±žæ€§æ‰€è®¾ç½®çš„ä½ç½®ç´¢å¼•ã€‚
+	// å®ƒç”¨äºŽå°† OpenGL ç»‘å®šçš„é¡¶ç‚¹å±žæ€§æ•°æ®ä¸Žé¡¶ç‚¹ç€è‰²å™¨ä¸­çš„ç›¸åº”è¾“å…¥å˜é‡ç›¸åŒ¹é…ã€‚
 	const unsigned int vPos_Idx =  glGetAttribLocation(shader,"vPos");
 	glEnableVertexAttribArray(vPos_Idx);
 	glVertexAttribPointer(

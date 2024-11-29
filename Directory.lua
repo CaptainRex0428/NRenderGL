@@ -1,4 +1,5 @@
 LocationDir = "%{wks.location}/settings"
+EXELocationDir = "%{wks.location}"
 
 OutputDir = "%{cfg.system}-%{cfg.architecture}/%{cfg.buildcfg}"
 

@@ -6,12 +6,14 @@ project "Render"
     files
     {
         "include/**.h",
-        "src/**.cpp"
+        "src/**.cpp",
+        "res/**"
     }
 
     includedirs
     {
         "include",
+        "res",
 		"%{DepIncludeDir.SDL}",
 		"%{DepIncludeDir.libpng}",
         "%{DepIncludeDir.glad}",
@@ -62,7 +64,7 @@ project "Render"
 
     -- warnings "off"
 
-    location (LocationDir)
+    location (EXELocationDir.."/Render")
     targetdir (EXEDir)
     objdir (ObjectDir)
 
@@ -72,21 +74,31 @@ project "Render"
     filter "system:windows" 
         -- staticruntime "Off"
         systemversion "latest"
-        defines { "_WINDOWS" }
+        defines 
+        { "_WINDOWS" }
+
+        postbuildcommands
+        {
+            "{COPYDIR} $(ProjectDir)res/ $(TargetDir)res/"
+        }
+    
 
     filter "configurations:Debug"
         runtime "Debug"
         symbols "On"
-        defines { "_DEBUG" }
+        defines 
+        { "_DEBUG" }
 
     filter "configurations:Release"
         runtime "Release"
         optimize "On"
         symbols "On"
-        defines { "_RELEASE","NDEBUG" }
+        defines 
+        { "_RELEASE","NDEBUG" }
 
     filter "configurations:Dist"
         runtime "Release"
         optimize "On"
         symbols "Off"
-        defines { "_DIST","NDEBUG" }
+        defines 
+        { "_DIST","NDEBUG" }
