@@ -12,6 +12,7 @@ workspace "NRenderGL"
 
     filter "system:windows"
     buildoptions { "/EHsc", "/Zc:preprocessor", "/Zc:__cplusplus", "/utf-8" }
+	linkoptions {"/NODEFAULTLIB:LIBCMTD"}
 	
 group "Render"
 	include "Render/Render.lua"

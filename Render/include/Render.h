@@ -26,5 +26,7 @@ namespace render
 		Vector normal;
 	};
 
-	int Render(const Vertex * vertices, unsigned int size);
+	int Render(
+		const Vertex* Vertices, unsigned int VerticesSize, 
+		const unsigned int* Indices, unsigned int IndicesSize);
 }

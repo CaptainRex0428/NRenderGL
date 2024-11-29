@@ -103,7 +103,9 @@ static int CreateShader(const std::string& vertexShader, const std::string& frag
 	return program;
 }
 
-int render::Render(const Vertex* vertices, unsigned int size)
+int render::Render(
+	const Vertex* Vertices, unsigned int VerticesSize,
+	const unsigned int* Indices, unsigned int IndicesSize)
 {
 	GLFWwindow* window;
 
@@ -130,17 +132,31 @@ int render::Render(const Vertex* vertices, unsigned int size)
 
 	std::cout << "OpenGL Version " << glGetString(GL_VERSION) << std::endl;
 
+#pragma region buffer
+
 	unsigned int buffer;
 	glGenBuffers(1,&buffer); // integer here is a specific identifier of buffer
 	glBindBuffer(GL_ARRAY_BUFFER,buffer);
-	glBufferData(GL_ARRAY_BUFFER, size, vertices,GL_STATIC_DRAW);// specify the data and specify how to call draw
+	glBufferData(GL_ARRAY_BUFFER, VerticesSize, Vertices,GL_STATIC_DRAW);// specify the data and specify how to call draw
+
+	unsigned int indicesBuffer;
+	glGenBuffers(1, &indicesBuffer); // integer here is a specific identifier of buffer
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indicesBuffer);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, IndicesSize, Indices, GL_STATIC_DRAW);// specify the data and specify how to call draw
+
+#pragma endregion
+
+#pragma region CompileShader
 
 	ShaderSource shaderSource = ParseShader(GetShaderPath("Basic.shader"));
 	unsigned int shader = CreateShader(shaderSource.VertexSource, shaderSource.FragmentSource);
 
 	glUseProgram(shader);
 
-	// tell the layout of attributes
+#pragma endregion
+
+#pragma region BindShaderParameters
+
 	// 第一个参数（index）指定了你在着色器中为顶点属性所设置的位置索引。
 	// 它用于将 OpenGL 绑定的顶点属性数据与顶点着色器中的相应输入变量相匹配。
 	const unsigned int vPos_Idx =  glGetAttribLocation(shader,"vPos");
@@ -163,7 +179,10 @@ int render::Render(const Vertex* vertices, unsigned int size)
 
 	const unsigned int MVP_Idx = glGetUniformLocation(shader, "MVP");
 
-	/* Loop until the user closes the window */
+#pragma endregion
+
+#pragma region draw
+
 	while (!glfwWindowShouldClose(window))
 	{
 		int width, height;
@@ -174,23 +193,33 @@ int render::Render(const Vertex* vertices, unsigned int size)
 		glViewport(0, 0, width, height);
 		glClear(GL_COLOR_BUFFER_BIT);
 
-		mat4x4 m, p, mvp;
+		/*mat4x4 m, p, mvp;
 		mat4x4_identity(m);
 		mat4x4_rotate_Z(m, m, (float)glfwGetTime());
 		mat4x4_ortho(p, -ratio, ratio, -1.f, 1.f, 1.f, -1.f);
 		mat4x4_mul(mvp, p, m);
 
-		glUniformMatrix4fv(MVP_Idx, 1, GL_FALSE, (const GLfloat*)&mvp);
+		glUniformMatrix4fv(MVP_Idx, 1, GL_FALSE, (const GLfloat*)&mvp);*/
 		
-		glDrawArrays(GL_TRIANGLES, 0, 3);
+		glDrawElements(GL_TRIANGLES, IndicesSize / sizeof(unsigned int), GL_UNSIGNED_INT, nullptr);
+
+		// glDrawArrays(GL_TRIANGLES, 0, 3);
+		
 		/* Swap front and back buffers */
 		glfwSwapBuffers(window);
 		/* Poll for and process events */
 		glfwPollEvents();
 	}
 
+#pragma endregion
+
+#pragma region clear
+
 	glDeleteShader(shader);
 
 	glfwTerminate();
+
+#pragma endregion
+
 	return 0;
 }

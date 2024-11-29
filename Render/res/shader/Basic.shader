@@ -7,7 +7,8 @@ in vec4 vPos;
 out vec4 color;
 void main()
 {
-    gl_Position = MVP * vPos;
+    // gl_Position = MVP * vPos;
+    gl_Position = vPos;
     color = vCol;
 };
 
