@@ -9,6 +9,29 @@
 #include <glew.h>
 #include <GLFW/glfw3.h>
 
+#define ASSERT(x) if (!(x)) __debugbreak();
+
+#define GLCall(x) GLClearError();\
+				  x;\
+				  ASSERT(GLLogCall(#x, __FILE__, __LINE__));
+
+static void GLClearError()
+{
+	while (glGetError()!= GL_NO_ERROR);
+}
+
+static bool GLLogCall(const char * function, const char * file, int line)
+{
+
+	while (GLenum error = glGetError())
+	{
+		std::cout << "[OpenGL Error] (" << error << ") " << function << " " << file << " line:" << line << std::endl;
+		return false;
+	}
+
+	return true;
+}
+
 struct ShaderSource
 {
 	std::string VertexSource;
@@ -107,6 +130,8 @@ int render::Render(
 	const Vertex* Vertices, unsigned int VerticesSize,
 	const unsigned int* Indices, unsigned int IndicesSize)
 {
+
+#pragma region GLInit
 	GLFWwindow* window;
 
 	/* Initialize the library */
@@ -114,7 +139,7 @@ int render::Render(
 		return -1;
 
 	/* Create a windowed mode window and its OpenGL context */
-	window = glfwCreateWindow(640, 480, "Hello World", NULL, NULL);
+	window = glfwCreateWindow(640, 480, "NRenderGL", NULL, NULL);
 	if (!window)
 	{
 		glfwTerminate();
@@ -132,7 +157,9 @@ int render::Render(
 
 	std::cout << "OpenGL Version " << glGetString(GL_VERSION) << std::endl;
 
-#pragma region buffer
+#pragma endregion
+
+#pragma region Buffer
 
 	unsigned int buffer;
 	glGenBuffers(1,&buffer); // integer here is a specific identifier of buffer
@@ -181,7 +208,7 @@ int render::Render(
 
 #pragma endregion
 
-#pragma region draw
+#pragma region Draw
 
 	while (!glfwWindowShouldClose(window))
 	{
@@ -200,8 +227,8 @@ int render::Render(
 		mat4x4_mul(mvp, p, m);
 
 		glUniformMatrix4fv(MVP_Idx, 1, GL_FALSE, (const GLfloat*)&mvp);*/
-		
-		glDrawElements(GL_TRIANGLES, IndicesSize / sizeof(unsigned int), GL_UNSIGNED_INT, nullptr);
+
+		GLCall(glDrawElements(GL_TRIANGLES, IndicesSize / sizeof(unsigned int), GL_UNSIGNED_INT, nullptr));
 
 		// glDrawArrays(GL_TRIANGLES, 0, 3);
 		
@@ -213,7 +240,7 @@ int render::Render(
 
 #pragma endregion
 
-#pragma region clear
+#pragma region Clear
 
 	glDeleteShader(shader);
 
